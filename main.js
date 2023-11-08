@@ -3,27 +3,28 @@ import * as cl from "./canvas_lib.mjs";
 import { Obstacle } from "./obstacle.mjs";
 import { Player } from "./player.mjs";
 import { Joystick } from "./joystick.mjs";
+import { Projectile } from "./projectile.mjs";
 
 
 
 window.onload = () => {
+   let playerPosX = 50, playerPosY = 250;
+   let x = 0;
    const ctx = cl.initCanvas('canvas');
-   let interactiveObjects = [], strokeStyle = "#000", points = [];
-   let playerOne = new Player(ctx, 50, 250, '#0f0', 180);
-   let playerTwo = new Player(ctx, 1050, 450, '#f00', 0);
-   let obstacleSpawnOne = new Obstacle(ctx, 250, 100, 40, 200, 20);
-   let obstacleSpawnTwo = new Obstacle(ctx, 900, 75, 40, 200, -10);
-   let shootPlayerOne = new create_button(ctx, 10, 800);
-   let stickOne = new Joystick(ctx, 75, 75, '#999999', 180)
-   let stickTwo = new Joystick(ctx, 75, 500, '#999999', 180)
+   let shots = [];
+   let fingers = [];
+   let interactiveObjects = [];
+   let playerOne = new Player(ctx, playerPosX, playerPosY, '#00FF0023', '#0F0', 0);
+   let playerTwo = new Player(ctx, 1100, 200, '#FF000023', '#F00', 180);
+   let obstacleSpawnOne = new Obstacle(ctx, 270, 100, 80);
+   let obstacleSpawnTwo = new Obstacle(ctx, 850, 350, -70);
+   let obstacleSpawnThree = new Obstacle(ctx, 425, 300, 10);
 
-   interactiveObjects.push(stickOne);
-   interactiveObjects.push(stickTwo);
    interactiveObjects.push(playerOne);
-   //interactiveObjects.push(playerTwo);
    interactiveObjects.push(obstacleSpawnOne);
    interactiveObjects.push(obstacleSpawnTwo);
-   //interactiveObjects.push(shootPlayerOne);
+   interactiveObjects.push(obstacleSpawnThree);
+   interactiveObjects.push(playerTwo);
 
    canvas.addEventListener("touchstart", (evt) => {
       evt.preventDefault();
@@ -40,29 +41,13 @@ window.onload = () => {
       rmFingers(evt.changedTouches);
    }, true);
 
-
-   let fingers = []
    function setFingers(touches, isStart = false) {
-      let tx1, tx2, ty1, ty2;
       for (let t of touches) {
          if (isStart) {
             for (let o of interactiveObjects) {
                o.isInside(t.pageX, t.pageY, t.identifier);
             }
          } else {
-            if (tx1) {
-               tx2 ??= t.pageX;
-               ty2 ??= t.pageY;
-               let a = Math.atan2(ty2 - ty1, tx2 - tx1);
-               console.log("alpha ", a);
-            }
-            tx1 ??= t.pageX;
-            ty1 ??= t.pageY;
-
-            let offset = stickOne.rawValue();
-            let rotation = stickTwo.getRotation();
-            playerOne.updateOffset(offset, offset);
-            playerOne.setRotation(rotation);
             for (let o of interactiveObjects) {
                o.move(t.pageX, t.pageY, t.identifier);
             }
@@ -71,17 +56,17 @@ window.onload = () => {
             x: t.pageX,
             y: t.pageY,
          };
-         //playerOne.setRotation(stickTwo.getRotation());
-         //playerOne.updateOffset(stickOne.getRaw());
+
+         playerPosX, playerPosY = playerOne.get();
       }
    }
 
    function rmFingers(touches) {
       for (let t of touches) {
-         fingers[t.identifier] = undefined;
          for (let o of interactiveObjects) {
             o.reset(t.identifier);
          }
+         fingers[t.identifier] = undefined;
       }
    }
 
@@ -97,6 +82,20 @@ window.onload = () => {
             let finger = fingers[f];
             cl.circle(ctx, finger.x, finger.y, 10, "red");
          }
+      }
+
+      x++;
+      if (x >= 60) {
+         x = 0;
+      }
+      if (x % 30 == 0) {
+         let proj = new Projectile(ctx, playerPosX, playerPosY);
+         shots.push(proj);
+         console.log("Shoot");
+      }
+
+      for (const shot of shots) {
+         shot.draw();
       }
 
       window.requestAnimationFrame(draw);

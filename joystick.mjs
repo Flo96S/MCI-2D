@@ -61,9 +61,7 @@ export function Joystick(ctx, x, y, options) {
    }
 
    function getRotation() {
-      let rot = (directionrot + 3);
-      console.log(rot);
-      return rot;
+      return directionrot;
    }
 
    function reset(id) {
