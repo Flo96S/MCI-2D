@@ -33,7 +33,6 @@ window.onload = () => {
    canvas.addEventListener("touchmove", (evt) => {
       evt.preventDefault();
       setFingers(evt.changedTouches);
-      playerOne.setRotation(stickOne.getRotation());
    }, true);
 
    canvas.addEventListener("touchend", (evt) => {
@@ -60,6 +59,10 @@ window.onload = () => {
             tx1 ??= t.pageX;
             ty1 ??= t.pageY;
 
+            let offset = stickOne.rawValue();
+            let rotation = stickTwo.getRotation();
+            playerOne.updateOffset(offset, offset);
+            playerOne.setRotation(rotation);
             for (let o of interactiveObjects) {
                o.move(t.pageX, t.pageY, t.identifier);
             }
@@ -68,6 +71,8 @@ window.onload = () => {
             x: t.pageX,
             y: t.pageY,
          };
+         //playerOne.setRotation(stickTwo.getRotation());
+         //playerOne.updateOffset(stickOne.getRaw());
       }
    }
 

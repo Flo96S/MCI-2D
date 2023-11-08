@@ -8,6 +8,7 @@ export function Player(ctx, posX, posY, color, rot) {
    let positionY = posY;
    let playersize = 35;
    let rotation = rot * (Math.PI / 180);
+   let offsetX = 0, offsetY = 0;
 
    function setRotation(rotate) {
       rotation = rotate;
@@ -15,7 +16,7 @@ export function Player(ctx, posX, posY, color, rot) {
 
    function draw() {
       ctx.resetTransform();
-      ctx.translate(positionX, positionY);
+      ctx.translate(positionX + offsetX, positionY + offsetY);
       ctx.rotate(rotation);
       cl.circle(ctx, 0, 0, playersize, playerColor, '#000', 2);
       cl.arrow(ctx, 0, 0, '#333');
@@ -27,13 +28,18 @@ export function Player(ctx, posX, posY, color, rot) {
       return inside;
    }
 
-   function move() {
-
+   function move(tx, ty, id) {
+      tx, ty, id
    }
 
    function reset() {
 
    }
 
-   return { draw, isInside, move, reset, setRotation }
+   function updateOffset(x, y) {
+      offsetX = x;
+      offsetY = y;
+   }
+
+   return { draw, isInside, move, reset, setRotation, updateOffset }
 }

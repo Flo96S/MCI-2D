@@ -19,8 +19,8 @@ export function Joystick(ctx, x, y, options) {
 
    function draw() {
       if (inside) {
-         cl.circle(ctx, x1, y1, radius, '#0F0', '#0F0', 2);
-         cl.circle(ctx, thumbX, thumbY, radius / 2, '#080', '#080', 2);
+         cl.circle(ctx, x1, y1, radius, '#979797', '#555', 2);
+         cl.circle(ctx, thumbX, thumbY, radius / 2, '#BBBBBB', '#555', 2);
       } else {
          cl.circle(ctx, x1, y1, radius, '#979797', options.color, 2);
          cl.circle(ctx, thumbX, thumbY, radius / 2, '#BBBBBB', options.touched, 2);
@@ -57,7 +57,7 @@ export function Joystick(ctx, x, y, options) {
    }
 
    function rawValue() {
-      return angle;
+      return directionrot;
    }
 
    function getRotation() {
