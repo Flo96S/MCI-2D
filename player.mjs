@@ -11,7 +11,6 @@ export function Player(ctx, posX, posY, color, strokeCol, rot) {
    let positionY = posY;
    let playersize = 35;
    let rotation = rot * (Math.PI / 180);
-   let offsetX = 0, offsetY = 0;
 
    function setRotation(rotate) {
       rotation = rotate;
@@ -19,7 +18,7 @@ export function Player(ctx, posX, posY, color, strokeCol, rot) {
 
    function draw() {
       ctx.resetTransform();
-      ctx.translate(positionX + offsetX, positionY + offsetY);
+      ctx.translate(positionX, positionY);
       ctx.rotate(rotation);
       cl.circle(ctx, 0, 0, playersize, playerColor, stroke, 2);
       ctx.drawImage(playerImg, 0 - 50, 0 - 50, 312 / 3, 206 / 3);
@@ -41,8 +40,6 @@ export function Player(ctx, posX, posY, color, strokeCol, rot) {
          positionX = tx;
          positionY = ty;
       }
-      //offsetX += tx * 0.05;
-      //offsetY += ty * 0.05;
    }
 
    function reset(id) {
@@ -52,14 +49,18 @@ export function Player(ctx, posX, posY, color, strokeCol, rot) {
       }
    }
 
-   function get() {
-      return (positionX, positionY);
+   function getY() {
+      return positionX, positionY;
    }
 
-   function updateOffset(x, y) {
-      //offsetX = x;
-      //offsetY = y;
+   function getX() {
+      return positionX;
    }
 
-   return { draw, isInside, move, reset, setRotation, updateOffset, get }
+   function getRotDirection() {
+      return { x: Math.cos(rotation), y: Math.sin(rotation) };
+   }
+
+
+   return { draw, isInside, move, reset, setRotation, getRotDirection, getY, getX }
 }

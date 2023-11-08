@@ -8,23 +8,26 @@ import { Projectile } from "./projectile.mjs";
 
 
 window.onload = () => {
-   let playerPosX = 50, playerPosY = 250;
+   let playerPosX = 50, playerPosY = 250, playerRotation = 0;
    let x = 0;
    const ctx = cl.initCanvas('canvas');
    let shots = [];
    let fingers = [];
    let interactiveObjects = [];
-   let playerOne = new Player(ctx, playerPosX, playerPosY, '#00FF0023', '#0F0', 0);
+   let playerOne = new Player(ctx, playerPosX, playerPosY, '#00FF0023', '#0F0', playerRotation);
    let playerTwo = new Player(ctx, 1100, 200, '#FF000023', '#F00', 180);
    let obstacleSpawnOne = new Obstacle(ctx, 270, 100, 80);
    let obstacleSpawnTwo = new Obstacle(ctx, 850, 350, -70);
    let obstacleSpawnThree = new Obstacle(ctx, 425, 300, 10);
+   let stickOne = new Joystick(ctx, 75, 550);
+   let firerotX = 0, firerotY = 0;
 
    interactiveObjects.push(playerOne);
    interactiveObjects.push(obstacleSpawnOne);
    interactiveObjects.push(obstacleSpawnTwo);
    interactiveObjects.push(obstacleSpawnThree);
    interactiveObjects.push(playerTwo);
+   interactiveObjects.push(stickOne);
 
    canvas.addEventListener("touchstart", (evt) => {
       evt.preventDefault();
@@ -56,8 +59,13 @@ window.onload = () => {
             x: t.pageX,
             y: t.pageY,
          };
-
-         playerPosX, playerPosY = playerOne.get();
+         playerPosY = playerOne.getY();
+         playerPosX = playerOne.getX();
+         playerRotation = stickOne.getRotation();
+         playerOne.setRotation(playerRotation);
+         let rots = playerOne.getRotDirection();
+         firerotX = rots.x;
+         firerotY = rots.y;
       }
    }
 
@@ -76,7 +84,6 @@ window.onload = () => {
       for (const o of interactiveObjects) {
          o.draw();
       }
-
       for (let f in fingers) {
          if (fingers[f]) {
             let finger = fingers[f];
@@ -89,13 +96,16 @@ window.onload = () => {
          x = 0;
       }
       if (x % 30 == 0) {
-         let proj = new Projectile(ctx, playerPosX, playerPosY);
+         console.log(firerotX, ":", firerotY);
+         let proj = new Projectile(ctx, playerPosX, playerPosY, firerotX, firerotY);
          shots.push(proj);
-         console.log("Shoot");
       }
 
       for (const shot of shots) {
-         shot.draw();
+         let b = shot.draw();
+      }
+      if (shots.length > 30) {
+         shots.shift();
       }
 
       window.requestAnimationFrame(draw);

@@ -1,17 +1,19 @@
 import * as cl from "./canvas_lib.mjs";
 
-export function Projectile(ctx, x, y) {
+export function Projectile(ctx, x, y, rotX, rotY) {
    let speed = 20;
    let posX = x, posY = y;
-   let size = 10;
+   let size = 5;
+   let _rotX = rotX, _rotY = rotY;
 
    function draw() {
       ctx.resetTransform();
       //ctx.translate(x, y);
       //ctx.rotate(rotation);
-      cl.circle(ctx, posX, posY, size, '#000', '#FF0', 2);
+      cl.circle(ctx, posX, posY, size, '#FFF', '#FF0', 2);
       ctx.resetTransform();
-      posX += speed;
+      posX += speed * _rotX;
+      posY += speed * _rotY;
    }
 
    function isInside(mouseX, mouseY) {
@@ -21,9 +23,8 @@ export function Projectile(ctx, x, y) {
 
    function move() {
       if (posX > 2000) return;
-      posX += speed;
-      posY += 0;
-
+      posX += speed * _rotX;
+      posY += 0 * _rotY;
    }
 
    function reset() {

@@ -10,7 +10,7 @@ const radius = 50;
  * @param options: {color:"#f00", touched:"#100", callback: function, linecolor:"#000"} 
  * @returns
  */
-export function Joystick(ctx, x, y, options) {
+export function Joystick(ctx, x, y) {
    let L = cl.getTransform(ctx, x, y, 0, 20); // LKS des zu greifenden Obj.
    let inside = false, touchId;
    let x1 = x, y1 = y, thumbX = x, thumbY = y;
@@ -22,8 +22,8 @@ export function Joystick(ctx, x, y, options) {
          cl.circle(ctx, x1, y1, radius, '#979797', '#555', 2);
          cl.circle(ctx, thumbX, thumbY, radius / 2, '#BBBBBB', '#555', 2);
       } else {
-         cl.circle(ctx, x1, y1, radius, '#979797', options.color, 2);
-         cl.circle(ctx, thumbX, thumbY, radius / 2, '#BBBBBB', options.touched, 2);
+         cl.circle(ctx, x1, y1, radius, '#979797', '#000', 2);
+         cl.circle(ctx, thumbX, thumbY, radius / 2, '#BBBBBB', '#000', 2);
       }
    }
 
