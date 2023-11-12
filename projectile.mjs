@@ -1,10 +1,12 @@
 import * as cl from "./canvas_lib.mjs";
 
-export function Projectile(ctx, x, y, rotX, rotY) {
+export function Projectile(ctx, x, y, rotX, rotY, shotid) {
    let speed = 20;
    let posX = x, posY = y;
    let size = 5;
    let _rotX = rotX, _rotY = rotY;
+   let shotby = 0;
+
 
    function draw() {
       ctx.resetTransform();
@@ -17,8 +19,8 @@ export function Projectile(ctx, x, y, rotX, rotY) {
    }
 
    function isInside(mouseX, mouseY) {
-      //inside = cl.distance(x, y, mouseX, mouseY) > radius;
-      return false;
+      inside = cl.distance(x, y, mouseX, mouseY) > radius;
+      return inside;
    }
 
    function move() {

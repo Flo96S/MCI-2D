@@ -1,0 +1,4 @@
+A simple 2D Game with a character movement, rotation and a constant shooting mode. 
+Next implementation will be: hitboxes, 2 moveable/shootable characters, maybe granades
+
+https://github.com/Flo96S/MCI-2D

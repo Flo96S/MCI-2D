@@ -1,5 +1,7 @@
 import * as cl from "./canvas_lib.mjs";
 
+//Known bug! If you use the joystick and then try to move the character, then the joystick will lock in the current position
+
 const radius = 50;
 
 /**
@@ -19,15 +21,16 @@ export function Joystick(ctx, x, y) {
 
    function draw() {
       if (inside) {
-         cl.circle(ctx, x1, y1, radius, '#979797', '#555', 2);
+         cl.circle(ctx, x1, y1, radius, '#97979755', '#555', 2);
          cl.circle(ctx, thumbX, thumbY, radius / 2, '#BBBBBB', '#555', 2);
       } else {
-         cl.circle(ctx, x1, y1, radius, '#979797', '#000', 2);
+         cl.circle(ctx, x1, y1, radius, '#97979733', '#000', 2);
          cl.circle(ctx, thumbX, thumbY, radius / 2, '#BBBBBB', '#000', 2);
       }
    }
 
    function isInside(mouseX, mouseY, id) {
+      if (touchId !== undefined && touchId != id) return
       touchId = id;
       inside = cl.distance(x1, y1, mouseX, mouseY) < radius / 2;
       console.log("inside", inside);
