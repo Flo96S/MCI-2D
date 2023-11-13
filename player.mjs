@@ -25,7 +25,6 @@ export function Player(ctx, posX, posY, color, strokeCol, rot, id) {
       ctx.drawImage(playerImg, 0 - 50, 0 - 50, 312 / 3, 206 / 3);
       //cl.arrow(ctx, 0, 0, '#333');
       ctx.resetTransform();
-      console.log("Player: ", playerid, " - Rotation: ", rotation);
    }
 
    function isInside(mouseX, mouseY, id, type = 0) {

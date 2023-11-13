@@ -14,10 +14,11 @@ window.onload = () => {
    let deviceH = window.innerHeight;
    let max = deviceH - 150, min = 30;
    let PointsPlayerOne = 0;
-   let PointsPlayerTwo = 0;
+   //let PointsPlayerTwo = 0;
 
+   let targetX = deviceW * 0.98, targetY = 75;
    let playerTwoPosX = deviceW - 75, playerTwoPosY = getRandom(), playerTwoRotation = 180;
-   let playerTwoRotX = -1, playerTwoRotY = 0;
+   //let playerTwoRotX = -1, playerTwoRotY = 0;
    let playerPosX = 50, playerPosY = getRandom(), playerRotation = 0;
    let x = 0;
    const ctx = cl.initCanvas('canvas');
@@ -25,23 +26,24 @@ window.onload = () => {
    let fingers = [];
    let interactiveObjects = [];
    let playerOne = new Player(ctx, playerPosX, playerPosY, '#00FF0023', '#0F0', playerRotation, 1);
-   let playerTwo = new Player(ctx, playerTwoPosX, playerTwoPosY, '#FF000023', '#F00', playerTwoRotation, 2);
+   //let playerTwo = new Player(ctx, playerTwoPosX, playerTwoPosY, '#FF000023', '#F00', playerTwoRotation, 2);
    let obstacleSpawnOne = new Obstacle(ctx, deviceW * 0.2, 100, 80);
    let obstacleSpawnTwo = new Obstacle(ctx, deviceW * 0.7, 350, -70);
    let obstacleSpawnThree = new Obstacle(ctx, deviceW * 0.4, 300, 10);
    let stickOne = new Joystick(ctx, 75, 550);
-   let stickTwo = new Joystick(ctx, deviceW - 70, 550);
+   //let stickTwo = new Joystick(ctx, deviceW - 70, 550);
    let firerotX = 1, firerotY = 0;
    let textOne = new CreateText(ctx, 20, 40, "0");
-   let textTwo = new CreateText(ctx, deviceW - 50, 40, "0");
+   let target = new CreateTarget(ctx, targetX, targetY);
+   //let textTwo = new CreateText(ctx, deviceW - 50, 40, "0");
 
    interactiveObjects.push(playerOne);
    interactiveObjects.push(obstacleSpawnOne);
    interactiveObjects.push(obstacleSpawnTwo);
    interactiveObjects.push(obstacleSpawnThree);
-   interactiveObjects.push(playerTwo);
+   //interactiveObjects.push(playerTwo);
+   //interactiveObjects.push(stickTwo);
    interactiveObjects.push(stickOne);
-   interactiveObjects.push(stickTwo);
 
    canvas.addEventListener("touchstart", (evt) => {
       evt.preventDefault();
@@ -83,18 +85,18 @@ window.onload = () => {
          };
          playerPosY = playerOne.getY();
          playerPosX = playerOne.getX();
-         playerTwoPosX = playerTwo.getX();
-         playerTwoRotY = playerTwo.getY();
+         //playerTwoPosX = playerTwo.getX();
+         //playerTwoRotY = playerTwo.getY();
          playerRotation = stickOne.getRotation();
-         playerTwoRotation = stickTwo.getRotation();
+         //playerTwoRotation = stickTwo.getRotation();
          playerOne.setRotation(playerRotation);
-         playerTwo.setRotation(playerTwoRotation);
+         //playerTwo.setRotation(playerTwoRotation);
          let rots = playerOne.getRotDirection();
-         let rotsPT = playerTwo.getRotDirection();
+         //let rotsPT = playerTwo.getRotDirection();
          firerotX = rots.x;
          firerotY = rots.y;
-         playerTwoRotX = rotsPT.x;
-         playerTwoRotY = rotsPT.y;
+         //playerTwoRotX = rotsPT.x;
+         //playerTwoRotY = rotsPT.y;
       }
    }
 
@@ -126,9 +128,9 @@ window.onload = () => {
       }
       if (x % 30 == 0) { //Adjust shoot frequenz
          let projOne = new Projectile(ctx, playerPosX, playerPosY, firerotX, firerotY, 1);
-         let projTwo = new Projectile(ctx, playerTwoPosX, playerTwoPosY, playerTwoRotX, playerTwoRotY, 2);
+         //let projTwo = new Projectile(ctx, playerTwoPosX, playerTwoPosY, playerTwoRotX, playerTwoRotY, 2);
          shots.push(projOne);
-         shots.push(projTwo);
+         //shots.push(projTwo);
       }
 
       for (const shot of shots) {
@@ -142,18 +144,12 @@ window.onload = () => {
          let y = shot.getY();
          let id = shot.getShotBy();
          if (id == 1) {
-            let inside = playerTwo.isInside(x, y, 1);
+            let inside = target.isInside(x, y, 1);
             if (inside) {
                PointsPlayerOne += 1;
                let index = shots.indexOf(shot);
                shots.splice(index, 1);
-            }
-         } else if (id == 2) {
-            let inside = playerOne.isInside(x, y, 1);
-            if (inside) {
-               PointsPlayerTwo += 1;
-               let index = shots.indexOf(shot);
-               shots.splice(index, 1);
+               targetY = getRandom();
             }
          }
       }
@@ -162,8 +158,8 @@ window.onload = () => {
          shots.shift();
       }
       textOne.draw(PointsPlayerOne);
-      textTwo.draw(PointsPlayerTwo);
-
+      //textTwo.draw(PointsPlayerTwo);
+      target.draw(targetY);
       window.requestAnimationFrame(draw);
    }
 
