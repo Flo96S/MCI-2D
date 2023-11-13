@@ -1,6 +1,6 @@
 import * as cl from "./canvas_lib.mjs";
 
-export function Player(ctx, posX, posY, color, strokeCol, rot) {
+export function Player(ctx, posX, posY, color, strokeCol, rot, id) {
    const playerImg = new Image();
    let inside = false;
    let touchId;
@@ -11,6 +11,7 @@ export function Player(ctx, posX, posY, color, strokeCol, rot) {
    let positionY = posY;
    let playersize = 35;
    let rotation = rot * (Math.PI / 180);
+   let playerid = id;
 
    function setRotation(rotate) {
       rotation = rotate;
@@ -24,10 +25,15 @@ export function Player(ctx, posX, posY, color, strokeCol, rot) {
       ctx.drawImage(playerImg, 0 - 50, 0 - 50, 312 / 3, 206 / 3);
       //cl.arrow(ctx, 0, 0, '#333');
       ctx.resetTransform();
+      console.log("Player: ", playerid, " - Rotation: ", rotation);
    }
 
-   function isInside(mouseX, mouseY, id) {
+   function isInside(mouseX, mouseY, id, type = 0) {
       let _inside = cl.distance(positionX, positionY, mouseX, mouseY) < playersize;
+      if (type == 1) {
+         //Got shot
+         console.log("Got shot");
+      }
       if (touchId === undefined && _inside) {
          touchId = id;
          inside = _inside;

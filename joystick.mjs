@@ -33,7 +33,6 @@ export function Joystick(ctx, x, y) {
       if (touchId !== undefined && touchId != id) return
       touchId = id;
       inside = cl.distance(x1, y1, mouseX, mouseY) < radius / 2;
-      console.log("inside", inside);
       return inside;
    }
 

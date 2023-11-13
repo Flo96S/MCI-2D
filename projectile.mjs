@@ -5,7 +5,7 @@ export function Projectile(ctx, x, y, rotX, rotY, shotid) {
    let posX = x, posY = y;
    let size = 5;
    let _rotX = rotX, _rotY = rotY;
-   let shotby = 0;
+   let shotby = shotid;
 
 
    function draw() {
@@ -29,9 +29,21 @@ export function Projectile(ctx, x, y, rotX, rotY, shotid) {
       posY += 0 * _rotY;
    }
 
+   function getShotBy() {
+      return shotby;
+   }
+
+   function getX() {
+      return posX;
+   }
+
+   function getY() {
+      return posY;
+   }
+
    function reset() {
 
    }
 
-   return { draw, isInside, move, reset }
+   return { draw, isInside, move, reset, getX, getY, getShotBy }
 }

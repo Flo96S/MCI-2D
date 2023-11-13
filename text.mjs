@@ -3,7 +3,8 @@ import * as cl from "./canvas_lib.mjs";
 export function CreateText(ctx, x, y, _text) {
    let text = _text;
 
-   function draw() {
+   function draw(_text) {
+      text = _text;
       ctx.resetTransform();
       ctx.font = '36px sans-serif';
       ctx.fillText(text, x, y);
