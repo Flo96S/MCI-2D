@@ -12,12 +12,12 @@ const radius = 50;
  * @param options: {color:"#f00", touched:"#100", callback: function, linecolor:"#000"} 
  * @returns
  */
-export function Joystick(ctx, x, y) {
+export function Joystick(ctx, x, y, defaultrot) {
    let L = cl.getTransform(ctx, x, y, 0, 20); // LKS des zu greifenden Obj.
    let inside = false, touchId;
    let x1 = x, y1 = y, thumbX = x, thumbY = y;
    let cpx1, cpy1;
-   let directionrot = 0;
+   let directionrot = defaultrot;
 
    function draw() {
       if (inside) {
@@ -30,9 +30,14 @@ export function Joystick(ctx, x, y) {
    }
 
    function isInside(mouseX, mouseY, id) {
-      if (touchId !== undefined && touchId != id) return
-      touchId = id;
+      console.log(id);
+      if (touchId !== undefined && touchId != id) {
+         return;
+      }
       inside = cl.distance(x1, y1, mouseX, mouseY) < radius / 2;
+      if (inside) {
+         touchId = id;
+      }
       return inside;
    }
 

@@ -30,11 +30,6 @@ export function CreateTarget(ctx, _x, _y, _callback) {
    function isInside(mouseX, mouseY) {
       inside = mouseX > x && mouseX < sizeY + x && mouseY > y && mouseY < y + sizeY;
       return inside;
-      inside = cl.distance(x, y, mouseX, mouseY) < radius;
-      if (inside) {
-         callback;
-      }
-      return inside;
    }
 
    function getX() {

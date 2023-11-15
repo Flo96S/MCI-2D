@@ -66,6 +66,10 @@ export function Player(ctx, posX, posY, color, strokeCol, rot, id) {
       return { x: Math.cos(rotation), y: Math.sin(rotation) };
    }
 
+   function checkIfHit(x, y) {
 
-   return { draw, isInside, move, reset, setRotation, getRotDirection, getY, getX }
+      return cl.distance(positionX, positionY, x, y) < playersize;
+   }
+
+   return { draw, isInside, move, reset, setRotation, getRotDirection, getY, getX, checkIfHit }
 }

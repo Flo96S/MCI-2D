@@ -19,6 +19,10 @@ export function Obstacle(ctx, x, y, rot) {
       return false;
    }
 
+   function checkIfHit() {
+
+   }
+
    function move() {
 
    }
